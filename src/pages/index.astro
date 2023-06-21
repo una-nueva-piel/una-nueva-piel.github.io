@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Link from '../components/Link.astro';
+---
+
+<Layout title="Carpiano">
+	<main class="h-screen bg-black">
+		<video autoplay muted loop class="fixed object-cover h-full opacity-75">
+			<source src="fragmento1.webm" type="video/webm">
+		</video>
+		<div class="h-full flex flex-col text-white py-8 gap-4">
+			<h1 class="z-10 text-5xl relative text-center">Carpiano</h1>
+			<nav class="flex flex-col grow justify-evenly items-center z-10 relative">
+				<Link
+					label="Interacción"
+					href="/interaccion"
+				/>
+				<Link
+					label="Equipos"
+					href="/equipos"
+				/>
+				<Link
+					label="Materiales"
+					href="/materiales"
+				/>
+				<Link
+					label="Sobre la obra"
+					href="/acerca"
+				/>
+			</nav>
+		</div>
+	</main>
+</Layout>
