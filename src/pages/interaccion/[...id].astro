@@ -1,0 +1,42 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+	const pantallas = await fetch('https://192.168.0.81:4430/pantalla')
+								.then(resp => resp.json())
+								.catch(err => console.error(err));
+	const ids = pantallas.map(p => ({ params: { id: p._id }}));
+
+	return [{ params: { id: undefined }, props: { pantallas }}, ...ids];
+}
+
+const { id } = Astro.params;
+const { pantallas } = Astro.props;
+---
+
+<Layout title="Una nueva piel">
+	<main
+		class="bg-black text-white h-full py-4 px-6"
+	>
+		{!id && !!pantallas && (
+			<ul class="flex flex-col gap-4 items-center">
+				{pantallas.map(p => (
+					<li class="w-full">
+						<a
+							href={`/interaccion/${p._id}`}
+							class={`flex gap-4 p-4 border w-full justify-between ${!p.manipulable && 'pointer-events-none'}`}
+						>
+							<p>{p.id}</p>
+							<p>{p.descripcion}</p>
+						</a>
+					</li>
+				))}
+			</ul>
+		)}
+		{!!id && (
+			<div>
+				<strong>ID</strong>: {id}
+			</div>
+		)}
+	</main>
+</Layout>
