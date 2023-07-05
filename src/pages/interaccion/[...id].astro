@@ -7,35 +7,63 @@ export async function getStaticPaths() {
 								.catch(err => console.error(err));
 	const ids = pantallas.map(p => ({ params: { id: p._id }}));
 
-	return [{ params: { id: undefined }, props: { pantallas }}, ...ids];
+	return [
+		{
+			params: { id: undefined },
+		},
+		...ids
+	];
 }
 
 const { id } = Astro.params;
-const { pantallas } = Astro.props;
 ---
+<style>
+[x-cloak] { display: none !important; }
+</style>
 
 <Layout title="Una nueva piel">
 	<main
 		class="bg-black text-white h-full py-4 px-6"
 	>
-		{!id && !!pantallas && (
-			<ul class="flex flex-col gap-4 items-center">
-				{pantallas.map(p => (
+		{!id && (
+			<ul
+				x-data="{ pantallas: [] }"
+				x-init={`() => fetch('https://192.168.0.81:4430/pantalla')
+								.then(resp => resp.json())
+								.then(data => pantallas = data)
+								.catch(err => console.error(err))`}
+				class="flex flex-col gap-4 items-center"
+			>
+				<template x-for="p in pantallas">
 					<li class="w-full">
 						<a
-							href={`/interaccion/${p._id}`}
-							class={`flex gap-4 p-4 border w-full justify-between ${!p.manipulable && 'pointer-events-none'}`}
+							x-bind:href="'/interaccion/' + p._id"
+							x-bind:class="!p.manipulable && 'pointer-events-none'"
+							class="flex gap-4 p-4 border w-full justify-between"
 						>
-							<p>{p.id}</p>
-							<p>{p.descripcion}</p>
+							<p x-text="p.id"></p>
+							<p x-text="p.descripcion"></p>
 						</a>
 					</li>
-				))}
+				</template>
 			</ul>
 		)}
 		{!!id && (
-			<div>
-				<strong>ID</strong>: {id}
+			<div
+				x-data="{ pantalla: {}, cargando: true }"
+				x-init={`() => fetch('https://192.168.0.81:4430/pantalla/${id}')
+								.then(resp => resp.json())
+								.then(data => pantalla = data)
+								.then(() => cargando = false)
+								.catch(err => console.error(err))`}
+			>
+				<p x-show="cargando">Cargando...</p>
+				<p x-show="!cargando && !pantalla.manipulable" x-cloak>
+					En este momento esta pantalla no está disponible
+				</p>
+				<div x-show="!cargando && pantalla.manipulable" x-cloak>
+					Caca
+				</div>
 			</div>
 		)}
 	</main>
