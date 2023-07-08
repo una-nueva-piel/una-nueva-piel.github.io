@@ -58,13 +58,82 @@ const { id } = Astro.params;
 								.catch(err => console.error(err))`}
 			>
 				<p x-show="cargando">Cargando...</p>
-				<p x-show="!cargando && !pantalla.manipulable" x-cloak>
+				<p
+					x-cloak
+					x-show="!cargando && !pantalla.manipulable"
+				>
 					En este momento esta pantalla no está disponible
 				</p>
-				<div x-show="!cargando && pantalla.manipulable" x-cloak>
-					Caca
+				<div
+					x-cloak
+					x-show="!cargando && pantalla.manipulable"
+					id="pantalla"
+					data-id={id}
+				>
 				</div>
 			</div>
 		)}
 	</main>
 </Layout>
+
+<script>
+import Konva from 'konva';
+import { io } from "socket.io-client";
+
+const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max);
+
+const ws = io("https://192.168.0.81:4430", { path: "/ws/", withCredentials: false });
+ws.on("pantalla patched", ({ _id }) => console.log("received id:", _id));
+
+const id = document.getElementById("pantalla")?.dataset?.id;
+
+function patchCoordinate(x: number, y: number) {
+    var json = {
+		tipo: "float",
+		x,
+		y,
+		nombre: "shift",
+		duracion: -1,
+    };
+
+    fetch(`https://192.168.0.81:4430/pantalla/${id}`,
+	 {
+	      method: "PATCH",
+	      headers: {
+			'Content-Type': 'application/json'
+	      },
+	      body: JSON.stringify(json)
+	  })
+	.catch(err => console.log('Hubo un error' + err));
+ }
+
+const stage = new Konva.Stage({
+	container: "pantalla",
+	width: window.innerWidth,
+	height: window.innerHeight,
+});
+
+const layer = new Konva.Layer();
+
+const circle = new Konva.Circle({
+	x: 100,
+	y: 100,
+	radius: 10,
+	fill: "#89b717",
+	opacity: 0.8,
+	draggable: true,
+});
+
+circle.on("dragmove", e => {
+	circle
+		.x(clamp(circle.x(), circle.width() / 2, window.innerWidth - circle.width()))
+		.y(clamp(circle.y(), circle.height() / 2, window.innerHeight - circle.height()));
+
+	patchCoordinate(circle.x(), circle.y());
+});
+
+layer.add(circle);
+stage.add(layer);
+
+layer.draw();
+</script>
