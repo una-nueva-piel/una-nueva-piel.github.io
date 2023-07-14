@@ -83,7 +83,7 @@ import { io } from "socket.io-client";
 const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max);
 
 const ws = io("https://192.168.0.81:4430", { path: "/ws/", withCredentials: false });
-ws.on("pantalla patched", ({ _id }) => console.log("received id:", _id));
+ws.on("pantalla patched", ({ x, y }) => circle.x(x).y(y));
 
 const id = document.getElementById("pantalla")?.dataset?.id;
 
