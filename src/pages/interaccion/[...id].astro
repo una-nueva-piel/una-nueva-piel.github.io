@@ -1,11 +1,12 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Regular from '../../layouts/Regular.astro';
+import Screen from '../../components/Screen.astro';
 
 export async function getStaticPaths() {
 	const pantallas = await fetch('https://192.168.0.81:4430/pantalla')
 								.then(resp => resp.json())
 								.catch(err => console.error(err));
-	const ids = pantallas.map(p => ({ params: { id: p._id }}));
+	const ids = pantallas.map((p: any) => ({ params: { id: p._id }}));
 
 	return [
 		{
@@ -21,9 +22,41 @@ const { id } = Astro.params;
 [x-cloak] { display: none !important; }
 </style>
 
-<Layout title="Una nueva piel">
+<Regular title="Interacción - Una nueva piel">
+	<!-- cool trick to get nice gradients on SVGs -->
+	<svg class="h-0 w-0 absolute" aria-hidden="true" focusable="false">
+	  <linearGradient id="gradient-2" x2="1" y2="1">
+		<stop offset="0%">
+		  <animate
+			attributeName="stop-color"
+			values="blue;#447799"
+			dur="20s"
+			repeatCount="indefinite"
+		  >
+          </animate>
+		</stop>
+		<stop offset="50%">
+		  <animate
+			attributeName="stop-color"
+			values="#224488;cyan"
+			dur="20s"
+			repeatCount="indefinite"
+		  >
+          </animate>
+		</stop>
+		<stop offset="100%">
+		  <animate
+			attributeName="stop-color"
+			values="cyan;#112266"
+			dur="20s"
+			repeatCount="indefinite"
+		  >
+          </animate>
+		</stop>
+	  </linearGradient>
+	</svg>
 	<main
-		class="bg-black text-white h-full py-4 px-6"
+		class="max-w-prose mx-auto text-white py-8 px-6"
 	>
 		{!id && (
 			<ul
@@ -32,17 +65,28 @@ const { id } = Astro.params;
 								.then(resp => resp.json())
 								.then(data => pantallas = data)
 								.catch(err => console.error(err))`}
-				class="flex flex-col gap-4 items-center"
+				class="grid grid-cols-1 gap-4"
 			>
 				<template x-for="p in pantallas">
-					<li class="w-full">
+					<li class="w-full h-64">
 						<a
 							x-bind:href="'/interaccion/' + p._id"
 							x-bind:class="!p.manipulable && 'pointer-events-none'"
-							class="flex gap-4 p-4 border w-full justify-between"
+							class="h-full w-full"
 						>
-							<p x-text="p.id"></p>
-							<p x-text="p.descripcion"></p>
+							<div class="relative h-full w-3/4 mx-auto grid place-items-center">
+								<Screen
+									className="absolute filter invert"
+									fill="url(#gradient-2)"
+								/>
+								<p
+									x-text="p.descripcion"
+									class="text-lg uppercase font-bold text-slate-50 absolute h-full w-full \
+										grid place-items-center transform -translate-y-6 text-center"
+								>
+								</p>
+								<span x-text="p.id"></span>
+							</div>
 						</a>
 					</li>
 				</template>
@@ -74,7 +118,7 @@ const { id } = Astro.params;
 			</div>
 		)}
 	</main>
-</Layout>
+</Regular>
 
 <script>
 import Konva from 'konva';
@@ -82,58 +126,65 @@ import { io } from "socket.io-client";
 
 const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max);
 
-const ws = io("https://192.168.0.81:4430", { path: "/ws/", withCredentials: false });
-ws.on("pantalla patched", ({ x, y }) => circle.x(x).y(y));
+function main() {
+	const id = document.getElementById("pantalla")?.dataset?.id;
+	if (!id) {
+		return;
+	}
 
-const id = document.getElementById("pantalla")?.dataset?.id;
+	const ws = io("https://192.168.0.81:4430", { path: "/ws/", withCredentials: false });
+	ws.on("pantalla patched", ({ x, y }) => circle.x(x).y(y));
 
-function patchCoordinate(x: number, y: number) {
-    var json = {
-		tipo: "float",
-		x,
-		y,
-		nombre: "shift",
-		duracion: -1,
-    };
+	function patchCoordinate(x: number, y: number) {
+		var json = {
+			tipo: "float",
+			x,
+			y,
+			nombre: "shift",
+			duracion: -1,
+		};
 
-    fetch(`https://192.168.0.81:4430/pantalla/${id}`,
-	 {
-	      method: "PATCH",
-	      headers: {
-			'Content-Type': 'application/json'
-	      },
-	      body: JSON.stringify(json)
-	  })
-	.catch(err => console.log('Hubo un error' + err));
- }
+		fetch(`https://192.168.0.81:4430/pantalla/${id}`,
+		 {
+			  method: "PATCH",
+			  headers: {
+				'Content-Type': 'application/json'
+			  },
+			  body: JSON.stringify(json)
+		  })
+		.catch(err => console.log('Hubo un error' + err));
+	 }
 
-const stage = new Konva.Stage({
-	container: "pantalla",
-	width: window.innerWidth,
-	height: window.innerHeight,
-});
+	const stage = new Konva.Stage({
+		container: "pantalla",
+		width: window.innerWidth,
+		height: window.innerHeight,
+	});
 
-const layer = new Konva.Layer();
+	const layer = new Konva.Layer();
 
-const circle = new Konva.Circle({
-	x: 100,
-	y: 100,
-	radius: 10,
-	fill: "#89b717",
-	opacity: 0.8,
-	draggable: true,
-});
+	const circle = new Konva.Circle({
+		x: 100,
+		y: 100,
+		radius: 10,
+		fill: "#89b717",
+		opacity: 0.8,
+		draggable: true,
+	});
 
-circle.on("dragmove", e => {
-	circle
-		.x(clamp(circle.x(), circle.width() / 2, window.innerWidth - circle.width()))
-		.y(clamp(circle.y(), circle.height() / 2, window.innerHeight - circle.height()));
+	circle.on("dragmove", _ => {
+		circle
+			.x(clamp(circle.x(), circle.width() / 2, window.innerWidth - circle.width()))
+			.y(clamp(circle.y(), circle.height() / 2, window.innerHeight - circle.height()));
 
-	patchCoordinate(circle.x(), circle.y());
-});
+		patchCoordinate(circle.x(), circle.y());
+	});
 
-layer.add(circle);
-stage.add(layer);
+	layer.add(circle);
+	stage.add(layer);
 
-layer.draw();
+	layer.draw();
+}
+
+main();
 </script>
