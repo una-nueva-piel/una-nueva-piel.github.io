@@ -1,26 +1,71 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Link from '../components/Link.astro';
 ---
 
 <Layout title="Una nueva piel">
-	<main class="h-screen bg-black">
+	<!-- cool trick to get nice gradients on SVGs -->
+	<svg class="h-0 w-0 absolute" aria-hidden="true" focusable="false">
+	  <linearGradient id="gradient-1" x2="1" y2="1">
+		<stop offset="0%">
+		  <animate
+			attributeName="stop-color"
+			values="blue;#447799"
+			dur="20s"
+			repeatCount="indefinite"
+		  >
+          </animate>
+		</stop>
+		<stop offset="50%">
+		  <animate
+			attributeName="stop-color"
+			values="#224488;cyan"
+			dur="20s"
+			repeatCount="indefinite"
+		  >
+          </animate>
+		</stop>
+		<stop offset="100%">
+		  <animate
+			attributeName="stop-color"
+			values="cyan;#112266"
+			dur="20s"
+			repeatCount="indefinite"
+		  >
+          </animate>
+		</stop>
+	  </linearGradient>
+	</svg>
+	<main class="h-full bg-black">
 		<video autoplay muted loop class="fixed object-cover h-full opacity-75">
 			<source src="fragmento1.webm" type="video/webm">
 		</video>
-		<div class="h-full flex flex-col text-white py-8 gap-4">
-			<h1 class="z-10 text-5xl relative text-center">Una nueva piel</h1>
-			<h2 class="z-10 relative text-xl text-center">¿Qué hacemos con las tecnologías y qué nos hacen las tecnologías?</h2>
-			<nav class="flex flex-col grow justify-evenly items-center z-10 relative">
-				<Link
-					label="Interacción"
-					href="/interaccion"
-				/>
-				<Link
-					label="Sobre la obra"
-					href="/acerca"
-				/>
-			</nav>
+		<div
+			class="isolate max-w-prose h-full grid grid-cols-1 grid-rows-[auto_auto_1fr_auto] \
+				py-8 gap-4 px-6 bg-gradient-to-b from-zinc-900"
+		>
+			<span class="font-bold text-5xl text-center text-slate-50">
+				Una nueva piel
+			</span>
+			<span class="text-xl text-center italic text-slate-100">
+				¿Qué hacemos con las tecnologías y qué nos hacen las tecnologías?
+			</span>
+			<a
+				class="w-full"
+				href="/interaccion"
+			>
+				<div class="relative h-full w-3/4 mx-auto grid place-items-center">
+					<svg class="absolute filter invert" fill="url(#gradient-1)" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+						<path d="M30 2.994h-28c-1.099 0-2 0.9-2 2v17.006c0 1.099 0.9 1.999 2 1.999h13v3.006h-5c-0.552 0-1 0.448-1 1s0.448 1 1 1h12c0.552 0 1-0.448 1-1s-0.448-1-1-1h-5v-3.006h13c1.099 0 2-0.9 2-1.999v-17.006c0-1.1-0.901-2-2-2zM30 22h-28v-17.006h28v17.006z"></path>
+					</svg>
+					<div
+						class="text-2xl uppercase font-bold text-slate-50 absolute h-full w-full grid place-items-center transform -translate-y-6">
+					Interacción
+					</div>
+				</div>
+			</a>
+			<a class="text-xl font-bold self-center justify-self-center text-slate-200" href="/acerca">
+				Sobre la obra
+			</a>
 		</div>
 	</main>
 </Layout>
