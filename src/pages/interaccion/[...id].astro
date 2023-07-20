@@ -1,4 +1,5 @@
 ---
+import Fullscreen from '../../layouts/Fullscreen.astro';
 import Regular from '../../layouts/Regular.astro';
 import Screen from '../../components/Screen.astro';
 
@@ -22,43 +23,43 @@ const { id } = Astro.params;
 [x-cloak] { display: none !important; }
 </style>
 
-<Regular title="Interacción - Una nueva piel">
-	<!-- cool trick to get nice gradients on SVGs -->
-	<svg class="h-0 w-0 absolute" aria-hidden="true" focusable="false">
-	  <linearGradient id="gradient-2" x2="1" y2="1">
-		<stop offset="0%">
-		  <animate
-			attributeName="stop-color"
-			values="blue;#447799"
-			dur="20s"
-			repeatCount="indefinite"
-		  >
-          </animate>
-		</stop>
-		<stop offset="50%">
-		  <animate
-			attributeName="stop-color"
-			values="#224488;cyan"
-			dur="20s"
-			repeatCount="indefinite"
-		  >
-          </animate>
-		</stop>
-		<stop offset="100%">
-		  <animate
-			attributeName="stop-color"
-			values="cyan;#112266"
-			dur="20s"
-			repeatCount="indefinite"
-		  >
-          </animate>
-		</stop>
-	  </linearGradient>
-	</svg>
-	<main
-		class="max-w-prose mx-auto py-8 px-6 bg-gradient-to-b from-zinc-900 to-zinc-1000"
-	>
-		{!id && (
+{!id && (
+	<Regular title="Interacción - Una nueva piel">
+		<!-- cool trick to get nice gradients on SVGs -->
+		<svg class="h-0 w-0 absolute" aria-hidden="true" focusable="false">
+		  <linearGradient id="gradient-2" x2="1" y2="1">
+			<stop offset="0%">
+			  <animate
+				attributeName="stop-color"
+				values="blue;#447799"
+				dur="20s"
+				repeatCount="indefinite"
+			  >
+			  </animate>
+			</stop>
+			<stop offset="50%">
+			  <animate
+				attributeName="stop-color"
+				values="#224488;cyan"
+				dur="20s"
+				repeatCount="indefinite"
+			  >
+			  </animate>
+			</stop>
+			<stop offset="100%">
+			  <animate
+				attributeName="stop-color"
+				values="cyan;#112266"
+				dur="20s"
+				repeatCount="indefinite"
+			  >
+			  </animate>
+			</stop>
+		  </linearGradient>
+		</svg>
+		<main
+			class="max-w-prose mx-auto py-8 px-6 bg-gradient-to-b from-zinc-900 to-zinc-1000"
+		>
 			<ul
 				x-data="{ pantallas: [] }"
 				x-init={`() => fetch('https://192.168.0.81:4430/pantalla')
@@ -91,34 +92,37 @@ const { id } = Astro.params;
 					</li>
 				</template>
 			</ul>
-		)}
-		{!!id && (
-			<div
-				x-data="{ pantalla: {}, cargando: true }"
-				x-init={`() => fetch('https://192.168.0.81:4430/pantalla/${id}')
-								.then(resp => resp.json())
-								.then(data => pantalla = data)
-								.then(() => cargando = false)
-								.catch(err => console.error(err))`}
+		</main>
+	</Regular>
+)}
+{!!id && (
+	<Fullscreen title={`Pantalla ${id} - Una nueva piel`}>
+		<div
+			x-data="{ pantalla: {}, cargando: true }"
+			x-init={`() => fetch('https://192.168.0.81:4430/pantalla/${id}')
+							.then(resp => resp.json())
+							.then(data => pantalla = data)
+							.then(() => cargando = false)
+							.catch(err => console.error(err))`}
+			class="bg-zinc-900"
+		>
+			<p x-show="cargando">Cargando...</p>
+			<p
+				x-cloak
+				x-show="!cargando && !pantalla.manipulable"
 			>
-				<p x-show="cargando">Cargando...</p>
-				<p
-					x-cloak
-					x-show="!cargando && !pantalla.manipulable"
-				>
-					En este momento esta pantalla no está disponible
-				</p>
-				<div
-					x-cloak
-					x-show="!cargando && pantalla.manipulable"
-					id="pantalla"
-					data-id={id}
-				>
-				</div>
+				En este momento esta pantalla no está disponible
+			</p>
+			<div
+				x-cloak
+				x-show="!cargando && pantalla.manipulable"
+				id="pantalla"
+				data-id={id}
+			>
 			</div>
-		)}
-	</main>
-</Regular>
+		</div>
+	</Fullscreen>
+)}
 
 <script>
 import Konva from 'konva';
