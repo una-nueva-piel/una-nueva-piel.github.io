@@ -56,7 +56,7 @@ const { id } = Astro.params;
 	  </linearGradient>
 	</svg>
 	<main
-		class="max-w-prose mx-auto text-white py-8 px-6"
+		class="max-w-prose mx-auto py-8 px-6 bg-gradient-to-b from-zinc-900 to-zinc-1000"
 	>
 		{!id && (
 			<ul
@@ -81,11 +81,11 @@ const { id } = Astro.params;
 								/>
 								<p
 									x-text="p.descripcion"
-									class="text-lg uppercase font-bold text-slate-50 absolute h-full w-full \
+									class="text-lg uppercase font-bold text-zinc-50 absolute h-full w-full \
 										grid place-items-center transform -translate-y-6 text-center"
 								>
 								</p>
-								<span x-text="p.id"></span>
+								<span x-text="p.id" class="text-zinc-200"></span>
 							</div>
 						</a>
 					</li>
