@@ -1,0 +1,38 @@
+---
+import { getCollection } from 'astro:content';
+
+import Regular from '../../layouts/Regular.astro';
+
+const aboutEntries = await getCollection('acerca');
+---
+
+<Regular title="Sobre la obra - Una nueva piel">
+	<main class="flex flex-col gap-6 mx-auto py-8 px-6 bg-gradient-to-b from-zinc-900 to-zinc-1000">
+		<nav>
+			<ul class="flex gap-2">
+				<li class="text-zinc-200">
+					<a href="/">Inicio</a>
+				</li>
+				<span class="text-zinc-200">&gt;</span>
+				<li class="text-zinc-50 font-bold">
+					Acerca
+				</li>
+			</ul>
+		</nav>
+		<article class="prose prose-invert">
+			<h1>Sobre la obra</h1>
+			<ul class="flex flex-col gap-4">
+				{aboutEntries.map(e => (
+					<li>
+						<a
+							href={`/acerca/${e.slug}`}
+						>
+							{e.data.title}
+						</a>
+					</li>
+				))}
+			</ul>
+		</article>
+	</main>
+</Regular>
+

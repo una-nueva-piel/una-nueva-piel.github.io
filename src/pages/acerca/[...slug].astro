@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+
+import Regular from '../../layouts/Regular.astro';
+
+export async function getStaticPaths() {
+  const aboutEntries = await getCollection('acerca');
+
+  const pages = aboutEntries.map(entry => ({
+    params: { slug: entry.slug }, props: { entry },
+  }));
+
+  return pages;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<Regular title="Sobre la obra - Una nueva piel">
+	<main class="flex flex-col gap-6 mx-auto py-8 px-6 bg-gradient-to-b from-zinc-900 to-zinc-1000">
+		<nav>
+			<ul class="flex gap-2">
+				<li class="text-zinc-200">
+					<a href="/">Inicio</a>
+				</li>
+				<span class="text-zinc-200">&gt;</span>
+				<li class="text-zinc-200">
+					<a href="/acerca">Acerca</a>
+				</li>
+				<span class="text-zinc-200">&gt;</span>
+				<li class="text-zinc-50 font-bold">
+					{entry.data.title}
+				</li>
+			</ul>
+		</nav>
+		<article class="prose prose-invert">
+			<h1>{entry.data.title}</h1>
+			<Content />
+		</article>
+	</main>
+</Regular>
