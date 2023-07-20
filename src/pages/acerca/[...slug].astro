@@ -17,26 +17,37 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 ---
 
-<Regular title="Sobre la obra - Una nueva piel">
-	<main class="flex flex-col gap-6 mx-auto py-8 px-6 bg-gradient-to-b from-zinc-900 to-zinc-1000">
-		<nav>
-			<ul class="flex gap-2">
-				<li class="text-zinc-200">
-					<a href="/">Inicio</a>
-				</li>
-				<span class="text-zinc-200">&gt;</span>
-				<li class="text-zinc-200">
-					<a href="/acerca">Acerca</a>
-				</li>
-				<span class="text-zinc-200">&gt;</span>
-				<li class="text-zinc-50 font-bold">
-					{entry.data.title}
-				</li>
-			</ul>
-		</nav>
-		<article class="prose prose-invert">
-			<h1>{entry.data.title}</h1>
-			<Content />
-		</article>
-	</main>
+<Regular title={`${entry.data.title} - Una nueva piel`}>
+	<div class="flex flex-col gap-8 mx-auto py-8 px-6">
+		<header class="max-w-prose">
+			<span class="block font-bold text-4xl text-slate-50 mb-2">
+				Una nueva piel
+			</span>
+			<span class="block text-md italic text-slate-100">
+				¿Qué hacemos con las tecnologías y qué nos hacen las tecnologías?
+			</span>
+		</header>
+		<hr class="border-zinc-400">
+		<main class="flex flex-col gap-6">
+			<nav>
+				<ul class="flex gap-2">
+					<li class="text-zinc-200">
+						<a href="/">Inicio</a>
+					</li>
+					<span class="text-zinc-200">&gt;</span>
+					<li class="text-zinc-200">
+						<a href="/acerca">Acerca</a>
+					</li>
+					<span class="text-zinc-200">&gt;</span>
+					<li class="text-zinc-50 font-bold">
+						{entry.data.title}
+					</li>
+				</ul>
+			</nav>
+			<article class="prose prose-invert">
+				<h1>{entry.data.title}</h1>
+				<Content />
+			</article>
+		</main>
+	</div>
 </Regular>
