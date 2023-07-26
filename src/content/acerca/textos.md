@@ -18,6 +18,8 @@ correctamente continúan siendo completamente desconocidos.
 
 — <cite>Martin Jay (2017) Ojos abatidos. La denigración de la visión en el
 pensamiento francés del siglo XX, págs. 14-15. Akal, Barcelona.</cite>
+<br >
+<br >
 
 > Los pintores avanzaron de la mano de los científicos. Registraron el
 mundo con la cámara oscura. ¿Será el secreto de Veermer? El mundo fue
@@ -28,11 +30,15 @@ intelecto; en tanto permite ver a través de él, su transparencia nos
 lleva a indagar los rincones más oscuros
 
 — <cite>Derek Jarman (2017) Croma. Un libro de color, pág 241. Caja Negra, Buenos Aires</cite>
+<br >
+<br >
 
 > Lo que sabemos o lo que creemos afecta al modo en que vemos las
 cosas.
 
 — <cite>John Berger (2000) Modos de ver, pág 13. Ediciones Gustavo Gil, Barcelona.</cite>
+<br >
+<br >
 
 > Zambulléndose en la noche, los murciélagos emiten, para orientarse,
 cientos de chillidos en distintas frecuencias que, al devolverse, les
@@ -42,6 +48,8 @@ es el aullido ciego de la medicina. Un rayo sonoro de imágenes en la
 impenetrable opacidad del cuerpo.
 
 — <cite>Meruane, Lina (2018) Sistema nervioso, pág 26. Buenos Aires: Eterna Cadencia.</cite>
+<br >
+<br >
 
 
 ## Escena 2

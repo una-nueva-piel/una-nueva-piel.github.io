@@ -1,10 +1,9 @@
 ---
-title: Equipos
+title: Proyectos
 ---
 
-## Proyectos
-
 ### Certificación de compilador hacia ARM
+#### FAMAF
 Este proyecto se enmarca en el grupo de investigación "Semántica de la Programación" de FAMAF.
 Continuando con una línea de investigación de hace unos cinco
 años, en el proyecto describimos *formalmente* una arquitectura de
@@ -12,15 +11,18 @@ computadora y probamos que la forma en que se hacen ciertos
 cálculos en esa computadora es correcta.
 
 ### Arte
+#### FA
 Creación, Circulación, Retroalimentación, Intervención en una
 sociedad postorgánica (Fac. Artes)
 
 ### Desplazamientos en los vínculos entre literatura, arte y vida.
+#### FCS - FFyH
 Escrituras contemporáneas en América Latina (CEA-Fac. de Cs.
 Sociales- co-radicado en el CIFFyH de la Facultad de Filosofía y
 Humanidades)
 
 ### Biosubjetividades
+#### FCS
 Neoliberalismo, Control y Resistencias (IPSIS-Fac. de Cs. Sociales)
 
 

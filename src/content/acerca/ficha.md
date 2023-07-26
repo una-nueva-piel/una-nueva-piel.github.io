@@ -63,6 +63,10 @@ Programación interactiva
 Miguel Pagano, sobre prototipo conjunto con Karen Palacio, Lucas
 Leonardo y Martín Vilela
 
+Sitio web
+
+Lucas Leonardo
+
 Performers
 
 Bailarinas
