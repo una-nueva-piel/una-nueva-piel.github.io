@@ -2,95 +2,104 @@
 title: Ficha técnica
 ---
 
-OBJETO: PROYECTOS PRIMAR
+### Objeto
 
-CONVOCATORIA: PRIMAR-TP 2019-2020
+Proyectos PRIMAR
 
-TÍTULO PROYECTO: LA CONDICIÓN POSTHUMANA: ¿QUÉ HACEMOS CON LAS
-TECNOLOGÍAS Y QUÉ NOS HACEN LAS TECNOLOGÍAS?
+### CONVOCATORIA
 
-Ficha técnica
+PRIMAR-TP 2019-2020
 
-Título de la obra: UNA NUEVA PIEL
+### Título Proyecto
 
-Sub-título: ¿Qué hacemos con las tecnologías y qué nos hacen las
+La Condición Posthumana: ¿Qué hacemos con las
+tecnologías y qué nos hacen las tecnologías?
+
+### Título de la obra
+
+Una Nueva Piel
+
+### Sub-título
+
+¿Qué hacemos con las tecnologías y qué nos hacen las
 tecnologías?
 
-Equipos participantes:
+### Equipos participantes
 
--Certificación de compilador hacia ARM (FAMAF)
+- Certificación de compilador hacia ARM (FAMAF)
 
-\- Arte: Creación, Circulación, Retroalimentación, Intervención en una
-sociedad postorgánica (Fac. Artes)
+- Arte: Creación, Circulación, Retroalimentación, Intervención en una
+  sociedad postorgánica (Fac. Artes)
 
-\- Desplazamientos en los vínculos entre literatura, arte y vida.
-Escrituras contemporáneas en América Latina (CEA-Fac. de Cs. Sociales-
-co-radicado en el CIFFyH de la Facultad de Filosofía y Humanidades)
+- Desplazamientos en los vínculos entre literatura, arte y vida.
+  Escrituras contemporáneas en América Latina (CEA-Fac. de Cs. Sociales-
+  co-radicado en el CIFFyH de la Facultad de Filosofía y Humanidades)
 
-\- Biosubjetividades: Neoliberalismo, Control y Resistencias (IPSIS-
-Fac. de Cs. Sociales)
+- Biosubjetividades: Neoliberalismo, Control y Resistencias (IPSIS-
+  Fac. de Cs. Sociales)
 
-Realización de la obra
+### Realización de la obra
 
-Guión
+#### Guión
 
-Andrea Torrano, Alicia Vaggione, Gonzalo Biffarella
+&emsp;&emsp;Andrea Torrano, Alicia Vaggione, Gonzalo Biffarella
 
-Colaboración en el guión
+#### Colaboración en el guión
 
-Natalia Fischetti, Mariana Olivares, Francisco Marguch
+&emsp;&emsp;Natalia Fischetti, Mariana Olivares, Francisco Marguch
 
-Diseño escénico
+#### Diseño escénico
 
-ABC trío: Gustavo Alcaraz, Julio Catalano, Gonzalo Biffarella
+&emsp;&emsp;ABC trío: Gustavo Alcaraz, Julio Catalano, Gonzalo Biffarella
 
-Música
+#### Música
 
-ABC trío: Gustavo Alcaraz, Julio Catalano, Gonzalo Biffarella
-
+&emsp;&emsp;ABC trío: Gustavo Alcaraz, Julio Catalano, Gonzalo Biffarella
 Artista invitada Patricia García: Flautas
 
-Imágenes
+#### Imágenes
 
-Registro de Video, Videos procesados en tiempo real, Edición
+&emsp;&emsp;Registro de Video, Videos procesados en tiempo real, Edición
 
-ABC trío: Gustavo Alcaraz, Julio Catalano, Gonzalo Biffarella
+&emsp;&emsp;ABC trío: Gustavo Alcaraz, Julio Catalano, Gonzalo Biffarella
 
-Imágenes astronómicas tomadas de la web oficial de la NASA
+&emsp;&emsp;Imágenes astronómicas tomadas de la web oficial de la NASA
 
-Programación interactiva
+#### Programación interactiva
 
-Miguel Pagano, sobre prototipo conjunto con Karen Palacio, Lucas
+&emsp;&emsp;Miguel Pagano, sobre prototipo conjunto con Karen Palacio, Lucas
 Leonardo y Martín Vilela
 
-Sitio web
+#### Sitio web
 
-Lucas Leonardo
+&emsp;&emsp;Lucas Leonardo
 
-Performers
+### Performers
 
-Bailarinas
+#### Bailarinas
 
-Sonia Gili
+&emsp;&emsp;Sonia Gili
 
-María Belén Zapiola
+&emsp;&emsp;María Belén Zapiola
 
-Instrumentista
+#### Instrumentista
 
-Patricia García
+&emsp;&emsp;Patricia García
 
-Lectura de textos
+#### Lectura de textos
 
-Andrea Torrano
+&emsp;&emsp;Andrea Torrano
 
-Iluminación
+### Iluminación
 
-Dirección de Iluminación
+#### Dirección de Iluminación
 
-Susana Pérez
+&emsp;&emsp;Susana Pérez
 
-Técnica de Iluminación
+#### Técnica de Iluminación
 
-Tania Pérsico
+&emsp;&emsp;Tania Pérsico
+
+---
 
 Las tomas se realizaron en el estudio fotográfico de Anselmo Pérez.
