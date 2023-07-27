@@ -20,6 +20,9 @@ export async function getStaticPaths() {
 }
 
 const { id } = Astro.params;
+
+const base = "/mano-bionica-2";
+const backendURL = "https://fef5-190-244-22-209.ngrok-free.app";
 ---
 <style>
 [x-cloak] { display: none !important; }
@@ -64,7 +67,7 @@ const { id } = Astro.params;
 		>
 			<ul
 				x-data="{ pantallas: [] }"
-				x-init={`() => fetch('https://192.168.0.81:4430/pantalla')
+				x-init={`() => fetch('${backendURL}/pantalla')
 								.then(resp => resp.json())
 								.then(data => pantallas = data)
 								.catch(err => console.error(err))`}
@@ -73,7 +76,7 @@ const { id } = Astro.params;
 				<template x-for="p in pantallas">
 					<li class="w-full h-64">
 						<a
-							x-bind:href="'/interaccion/' + p._id"
+							x-bind:href={`${base}/interaccion/p._id`}
 							x-bind:class="!p.manipulable && 'pointer-events-none'"
 							class="h-full w-full"
 						>
@@ -101,12 +104,13 @@ const { id } = Astro.params;
 	<Fullscreen title={`Pantalla ${id} - Una nueva piel`}>
 		<div
 			x-data="{ pantalla: {}, cargando: true }"
-			x-init={`() => fetch('https://192.168.0.81:4430/pantalla/${id}')
+			x-init={`() => fetch('${backendURL}/pantalla/${id}')
 							.then(resp => resp.json())
 							.then(data => pantalla = data)
 							.then(() => cargando = false)
 							.catch(err => console.error(err))`}
 			class="bg-zinc-900"
+			data-url={backendURL}
 		>
 			<p x-show="cargando">Cargando...</p>
 			<p
@@ -138,7 +142,9 @@ function main() {
 		return;
 	}
 
-	const ws = io("https://192.168.0.81:4430", { path: "/ws/", withCredentials: false });
+	const backendURL = document.getElementById("pantalla")?.dataset?.url!;
+
+	const ws = io(backendURL, { path: "/ws/", withCredentials: false });
 	ws.on("pantalla patched", ({ x, y }) => circle.x(x).y(y));
 
 	function patchCoordinate(x: number, y: number) {
@@ -150,7 +156,7 @@ function main() {
 			duracion: -1,
 		};
 
-		fetch(`https://192.168.0.81:4430/pantalla/${id}`,
+		fetch(`${backendURL}/pantalla/${id}`,
 		 {
 			  method: "PATCH",
 			  headers: {

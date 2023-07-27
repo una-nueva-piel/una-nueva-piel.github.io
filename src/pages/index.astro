@@ -1,6 +1,8 @@
 ---
 import Fullscreen from '../layouts/Fullscreen.astro';
 import Screen from '../components/Screen.astro';
+
+const base = "/mano-bionica-2";
 ---
 
 <Fullscreen title="Una nueva piel">
@@ -52,7 +54,7 @@ import Screen from '../components/Screen.astro';
 			</span>
 			<a
 				class="w-full"
-				href="/interaccion"
+				href={`${base}/interaccion`}
 			>
 				<div class="relative h-full w-3/4 mx-auto grid place-items-center">
 					<Screen
@@ -65,7 +67,10 @@ import Screen from '../components/Screen.astro';
 					</div>
 				</div>
 			</a>
-			<a class="text-xl font-bold self-center justify-self-center text-slate-200" href="/acerca">
+			<a
+				class="text-xl font-bold self-center justify-self-center text-slate-200"
+				href={`${base}/acerca`}
+			>
 				Sobre la obra
 			</a>
 		</div>
