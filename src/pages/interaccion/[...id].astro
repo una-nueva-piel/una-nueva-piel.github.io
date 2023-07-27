@@ -76,7 +76,7 @@ const backendURL = "https://cc5a-190-244-22-209.ngrok-free.app";
 				<template x-for="p in pantallas">
 					<li class="w-full h-64">
 						<a
-							x-bind:href={`${base}/interaccion/p._id`}
+							x-bind:href={`'${base}/interaccion/' + p._id`}
 							x-bind:class="!p.manipulable && 'pointer-events-none'"
 							class="h-full w-full"
 						>
