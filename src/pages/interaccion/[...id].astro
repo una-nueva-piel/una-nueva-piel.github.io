@@ -104,7 +104,7 @@ const backendURL = "https://cc5a-190-244-22-209.ngrok-free.app";
 	<Fullscreen title={`Pantalla ${id} - Una nueva piel`}>
 		<div
 			x-data="{ pantalla: {}, cargando: true }"
-			x-init={`() => fetch('${backendURL}/pantalla/${id}')
+			x-init={`() => fetch('${backendURL}/pantalla/${id}', { headers: { 'ngrok-skip-browser-warning': '69420' }})
 							.then(resp => resp.json())
 							.then(data => pantalla = data)
 							.then(() => cargando = false)
@@ -144,7 +144,7 @@ function main() {
 
 	const backendURL = document.getElementById("pantalla")?.dataset?.url!;
 
-	const ws = io(backendURL, { path: "/ws/", withCredentials: false });
+	const ws = io(backendURL, { path: "/ws/", withCredentials: false, extraHeaders: { 'ngrok-skip-browser-warning': '69420' }});
 	ws.on("pantalla patched", ({ x, y }) => circle.x(x).y(y));
 
 	function patchCoordinate(x: number, y: number) {
@@ -160,7 +160,8 @@ function main() {
 		 {
 			  method: "PATCH",
 			  headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				'ngrok-skip-browser-warning': '69420',
 			  },
 			  body: JSON.stringify(json)
 		  })
