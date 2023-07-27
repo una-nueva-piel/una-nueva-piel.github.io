@@ -110,7 +110,6 @@ const backendURL = "https://cc5a-190-244-22-209.ngrok-free.app";
 							.then(() => cargando = false)
 							.catch(err => console.error(err))`}
 			class="bg-zinc-900"
-			data-url={backendURL}
 		>
 			<p x-show="cargando">Cargando...</p>
 			<p
@@ -124,6 +123,7 @@ const backendURL = "https://cc5a-190-244-22-209.ngrok-free.app";
 				x-show="!cargando && pantalla.manipulable"
 				id="pantalla"
 				data-id={id}
+				data-url={backendURL}
 			>
 			</div>
 		</div>
