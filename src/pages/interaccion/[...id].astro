@@ -67,7 +67,7 @@ const backendURL = "https://cc5a-190-244-22-209.ngrok-free.app";
 		>
 			<ul
 				x-data="{ pantallas: [] }"
-				x-init={`() => fetch('${backendURL}/pantalla')
+				x-init={`() => fetch('${backendURL}/pantalla', { headers: { 'ngrok-skip-browser-warning': '69420' }})
 								.then(resp => resp.json())
 								.then(data => pantallas = data)
 								.catch(err => console.error(err))`}
