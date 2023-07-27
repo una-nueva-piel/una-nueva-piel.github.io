@@ -4,16 +4,18 @@ import Regular from '../../layouts/Regular.astro';
 import Screen from '../../components/Screen.astro';
 
 export async function getStaticPaths() {
-	const pantallas = await fetch('https://192.168.0.81:4430/pantalla')
-								.then(resp => resp.json())
-								.catch(err => console.error(err));
-	const ids = pantallas.map((p: any) => ({ params: { id: p._id }}));
-
 	return [
 		{
 			params: { id: undefined },
 		},
-		...ids
+		{ params: { id: "interior_ne" }},
+		{ params: { id: "interior_no" }},
+		{ params: { id: "interior_se" }},
+		{ params: { id: "interior_so" }},
+		{ params: { id: "pared_este" }},
+		{ params: { id: "pared_norte" }},
+		{ params: { id: "pared_oeste" }},
+		{ params: { id: "pared_sur" }},
 	];
 }
 
