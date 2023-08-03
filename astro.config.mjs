@@ -4,7 +4,7 @@ import tailwind from "@astrojs/tailwind";
 import alpinejs from "@astrojs/alpinejs";
 
 export default defineConfig({
-  site: "https://carpiano.github.io",
-  base: "/mano-bionica-2",
+  site: "https://una-nueva-piel.github.io",
+  base: "/",
   integrations: [tailwind(), alpinejs()],
 });
