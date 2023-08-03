@@ -21,7 +21,7 @@ const aboutEntries = await getCollection('acerca');
 			<nav>
 				<ul class="flex gap-2">
 					<li class="text-zinc-200">
-						<a href="/mano-bionica-2">Inicio</a>
+						<a href="/">Inicio</a>
 					</li>
 					<span class="text-zinc-200">&gt;</span>
 					<li class="text-zinc-50 font-bold">
@@ -35,7 +35,7 @@ const aboutEntries = await getCollection('acerca');
 					{aboutEntries.map(e => (
 						<li>
 							<a
-								href={`/mano-bionica-2/acerca/${e.slug}`}
+								href={`/acerca/${e.slug}`}
 							>
 								{e.data.title}
 							</a>
