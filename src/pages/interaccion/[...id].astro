@@ -8,21 +8,17 @@ export async function getStaticPaths() {
 		{
 			params: { id: undefined },
 		},
-		{ params: { id: "interior_ne" }},
-		{ params: { id: "interior_no" }},
-		{ params: { id: "interior_se" }},
-		{ params: { id: "interior_so" }},
-		{ params: { id: "pared_este" }},
-		{ params: { id: "pared_norte" }},
-		{ params: { id: "pared_oeste" }},
-		{ params: { id: "pared_sur" }},
+		{ params: { id: "rojo" }},
+		{ params: { id: "azul" }},
+		{ params: { id: "verde" }},
+		{ params: { id: "amarillo" }},
 	];
 }
 
 const { id } = Astro.params;
 
 const base = "/";
-const backendURL = "https://f38b-190-244-22-209.ngrok-free.app";
+const backendURL = "https://127.0.0.1:4430/";
 ---
 <style>
 [x-cloak] { display: none !important; }
