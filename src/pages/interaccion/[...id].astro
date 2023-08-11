@@ -8,17 +8,17 @@ export async function getStaticPaths() {
 		{
 			params: { id: undefined },
 		},
-		{ params: { id: "ver-y-ser-visto" }},
+		{ params: { id: "ver_y_ser_visto" }},
 		{ params: { id: "respirar" }},
-		{ params: { id: "nuevas-pieles" }},
-		{ params: { id: "que-hacemos" }},
+		{ params: { id: "nuevas_pieles" }},
+		{ params: { id: "que_hacemos" }},
 	];
 }
 
 const { id } = Astro.params;
 
 const base = "/";
-const backendURL = "https://127.0.0.1:4430/";
+const backendURL = "https://48e0-200-16-16-13.ngrok-free.app";
 ---
 <style>
 [x-cloak] { display: none !important; }
