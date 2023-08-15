@@ -17,7 +17,31 @@ export async function getStaticPaths() {
 
 const { id } = Astro.params;
 
-const backendURL = "https://81e7-190-19-213-10.ngrok-free.app";
+const backendURL = "https://localhost:4430";
+const fuera_de_linea = '\
+		<div\
+			class="isolate max-w-prose h-full grid grid-cols-1 grid-rows-[auto_auto_1fr_auto] \
+				py-8 gap-4 px-6 bg-gradient-to-b from-zinc-900"\
+		>\
+			<span class="font-bold text-5xl text-center text-slate-50">\
+				Una nueva piel\
+			</span>\
+			<span class="text-xl text-center italic text-slate-100">\
+				El miércoles 23 de agosto a las 18.00 ...\
+			</span>\
+			<a\
+				class="w-full"\
+				href="/interaccion"\
+			>\
+				<div class="relative h-full w-3/4 mx-auto grid place-items-center">\
+				</div>\
+			</a>\
+			<a class="text-xl font-bold self-center justify-self-center text-slate-200"\
+				href="/"\
+			>\
+				Volver al inicio\
+			</a>\
+		</div>';
 ---
 <style>
 [x-cloak] { display: none !important; }
@@ -57,7 +81,7 @@ const backendURL = "https://81e7-190-19-213-10.ngrok-free.app";
 			</stop>
 		  </linearGradient>
 		</svg>
-		<main
+		<main id="main"
 			class="max-w-prose mx-auto py-8 px-6 bg-gradient-to-b from-zinc-900 to-zinc-1000"
 		>
 			<ul
@@ -65,9 +89,9 @@ const backendURL = "https://81e7-190-19-213-10.ngrok-free.app";
 				x-init={`() => fetch('${backendURL}/pantalla', { headers: { 'ngrok-skip-browser-warning': '69420' }})
 								.then(resp => resp.json())
 								.then(data => pantallas = data)
-								.catch(err => console.error(err))`}
+								.catch(err => document.getElementById("main").innerHTML = '${fuera_de_linea}')`}
 				class="grid grid-cols-1 gap-4"
-			>
+			>	
 				<template x-for="p in pantallas">
 					<li class="w-full h-64">
 						<a
@@ -97,13 +121,13 @@ const backendURL = "https://81e7-190-19-213-10.ngrok-free.app";
 )}
 {!!id && (
 	<Fullscreen title={`Pantalla ${id} - Una nueva piel`}>
-		<div
+		<div id="main"
 			x-data="{ pantalla: {}, cargando: true }"
 			x-init={`() => fetch('${backendURL}/pantalla/${id}', { headers: { 'ngrok-skip-browser-warning': '69420' }})
 							.then(resp => resp.json())
 							.then(data => pantalla = data)
 							.then(() => cargando = false)
-							.catch(err => console.error(err))`}
+							.catch(err => document.getElementById("main").innerHTML = '${fuera_de_linea}')`}
 			class="bg-zinc-900"
 		>
 			<p x-show="cargando">Cargando...</p>
@@ -133,15 +157,17 @@ const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, 
 
 function main() {
 	const id = document.getElementById("pantalla")?.dataset?.id;
+	const data = document.getElementById("pantalla")?.dataset?.data;
 	if (!id) {
 		return;
 	}
 
 	const backendURL = document.getElementById("pantalla")?.dataset?.url!;
 
-	const ws = io(backendURL, { path: "/ws/", withCredentials: false, extraHeaders: { 'ngrok-skip-browser-warning': '69420' }});
-	ws.on("pantalla patched", ({ x, y }) => circle.x(x).y(y));
-
+	if(data){
+		const ws = io(backendURL, { path: "/ws/", withCredentials: false, extraHeaders: { 'ngrok-skip-browser-warning': '69420' }});
+		ws.on("pantalla patched", ({ x, y }) => circle.x(x).y(y));
+	};
 	function patchCoordinate(x: number, y: number) {
 		var json = {
 			tipo: "float",
