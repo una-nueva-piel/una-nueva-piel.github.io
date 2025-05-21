@@ -17,8 +17,7 @@ export async function getStaticPaths() {
 
 const { id } = Astro.params;
 
-const backendURL = "https://topical-platypus-partly.ngrok-free.app/";
-
+const backendURL = "https://topical-platypus-partly.ngrok-free.app";
 const fuera_de_linea = '\
 		<div\
 			class="isolate max-w-prose h-full grid grid-cols-1 grid-rows-[auto_auto_1fr_auto] \
@@ -122,24 +121,34 @@ const fuera_de_linea = '\
 )}
 {!!id && (
 	<Fullscreen title={`Pantalla ${id} - Una nueva piel`}>
-		
-	<div id="container" class="container">
-		<div id="scene" class="scene">
-			<div id="scene-1" data-depth="1.00" data-pointer-events="all"><img src="/layer1.png"></div>
-			<div data-depth="0.80"><img src="/layer2.png"></div>
+		<div id="main"
+			x-data="{ pantalla: {}, cargando: true }"
+			x-init={`() => fetch('${backendURL}/pantalla/${id}', { headers: { 'ngrok-skip-browser-warning': '69420' }})
+							.then(resp => resp.json())
+							.then(data => pantalla = data)
+							.then(() => cargando = false)
+							.catch(err => document.getElementById("main").innerHTML = '${fuera_de_linea}')`}
+			class="bg-zinc-900"
+		>
+			<p x-show="cargando">Cargando...</p>
+			<p
+				x-cloak
+				x-show="!cargando && !pantalla.manipulable"
+			>
+				En este momento esta pantalla no está disponible
+			</p>
+			<div
+				x-cloak
+				x-show="!cargando && pantalla.manipulable"
+				id="pantalla"
+				data-id={id}
+				data-url={backendURL}
+			>
+			</div>
 		</div>
-	</div>
-		
 	</Fullscreen>
 )}
-{ !!id && 
-	// <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
-	<script>
-	var scene = document.getElementById('scene');
-	var parallax = new Parallax(scene);
 
-	</script>
-}
 <script>
 import Konva from 'konva';
 import { io } from "socket.io-client";
@@ -196,31 +205,13 @@ function main() {
 		opacity: 0.8,
 		draggable: true,
 	});
-	
-	var lastTime = Date.now();
-
-	window.addEventListener("devicemotion", (event) => {
-		var currentTime = Date.now();
-		if(currentTime - lastTime > 500){
-		const acceleration = event.acceleration;
-		const { x, y, z } = acceleration;
-		circle.setAbsolutePosition({x: x*100,y:y*100} );
-		patchCoordinate(x, y);
-		lastTime = currentTime;
-		};
-	});
-
 
 	circle.on("dragmove", _ => {
-		let mX = window.innerWidth;
-		let mY = window.innerHeight;
-		let x = circle.x()/ mX;
-		let y = circle.y()/mY;
 		circle
 			.x(clamp(circle.x(), circle.width() / 2, window.innerWidth - circle.width()))
 			.y(clamp(circle.y(), circle.height() / 2, window.innerHeight - circle.height()));
-		console.log('X: ' + x + 'Y: ' + y);
-		patchCoordinate(x, y);
+
+		patchCoordinate(circle.x(), circle.y());
 	});
 
 	layer.add(circle);
