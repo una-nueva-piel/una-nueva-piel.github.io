@@ -1,0 +1,30 @@
+---
+import Screen from "./Screen.astro";
+
+export interface Props {
+    id: string;
+    title: string;
+}
+const {id, title } = Astro.props;
+---
+<li class="w-full h-64">
+    <a
+        x-bind:href={`'/interaccion/' + ${id}`}
+        x-bind:class="!p.manipulable && 'pointer-events-none'"
+        class="h-full w-full"
+    >
+        <div class="relative h-full w-3/4 mx-auto grid place-items-center">
+            <Screen
+                className="absolute filter invert"
+                fill="url(#gradient-2)"
+            />
+            <p
+                x-text={title}
+                class="text-lg uppercase font-bold text-zinc-50 absolute h-full w-full \
+                    grid place-items-center transform -translate-y-6 text-center"
+            >
+            </p>
+            <!-- <span x-text={id} class="text-zinc-200"></span> -->
+        </div>
+    </a>
+</li>

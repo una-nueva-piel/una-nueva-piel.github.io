@@ -1,228 +1,106 @@
 ---
-import Fullscreen from '../../layouts/Fullscreen.astro';
-import Regular from '../../layouts/Regular.astro';
-import Screen from '../../components/Screen.astro';
-
+import Fullscreen from "../../layouts/Fullscreen.astro";
+import Regular from "../../layouts/Regular.astro";
+import Pantalla from "../../components/Pantalla.astro";
+import Offline from "../../components/Offline.astro";
+import Monitor from "../../components/Monitor.astro";
 export async function getStaticPaths() {
-	return [
+	const pages = [
+		{ id: "", title: "", color: "" },
 		{
-			params: { id: undefined },
+			id: "ver_y_ser_visto",
+			title: "Ver y ser visto",
+			color: "green",
 		},
-		{ params: { id: "ver_y_ser_visto" }},
-		{ params: { id: "respirar" }},
-		{ params: { id: "nuevas_pieles" }},
-		{ params: { id: "que_hacemos" }},
+		{
+			id: "respirar",
+			title: "Respirar",
+			color: "red",
+		},
+		{
+			id: "nuevas_pieles",
+			title: "Nuevas pieles",
+			color: "blue",
+		},
+		{
+			id: "que_hacemos",
+			title: "Qué hacemos",
+			color: "yellow",
+		},
 	];
+
+	return pages.map(({ id, title, color }) => {
+		return {
+			params: { id },
+			props: { title, color },
+		};
+	});
 }
-
 const { id } = Astro.params;
-
-const backendURL = "https://topical-platypus-partly.ngrok-free.app";
-const fuera_de_linea = '\
-		<div\
-			class="isolate max-w-prose h-full grid grid-cols-1 grid-rows-[auto_auto_1fr_auto] \
-				py-8 gap-4 px-6 bg-gradient-to-b from-zinc-900"\
-		>\
-			<span class="font-bold text-5xl text-center text-slate-50">\
-				Una nueva piel\
-			</span>\
-			<span class="text-xl text-center italic text-slate-100">\
-				El miércoles 23 de agosto a las 18.00 ...\
-			</span>\
-			<a\
-				class="w-full"\
-				href="/interaccion"\
-			>\
-				<div class="relative h-full w-3/4 mx-auto grid place-items-center">\
-				</div>\
-			</a>\
-			<a class="text-xl font-bold self-center justify-self-center text-slate-200"\
-				href="/"\
-			>\
-				Volver al inicio\
-			</a>\
-		</div>';
+const { title, color } = Astro.props;
+const backendURL = "https://localhost:4430/";
 ---
 <style>
-[x-cloak] { display: none !important; }
+	[x-cloak] {
+		display: none !important;
+	}
 </style>
-
-{!id && (
-	<Regular title="Interacción - Una nueva piel">
-		<!-- cool trick to get nice gradients on SVGs -->
-		<svg class="h-0 w-0 absolute" aria-hidden="true" focusable="false">
-		  <linearGradient id="gradient-2" x2="1" y2="1">
-			<stop offset="0%">
-			  <animate
-				attributeName="stop-color"
-				values="blue;#447799"
-				dur="20s"
-				repeatCount="indefinite"
-			  >
-			  </animate>
-			</stop>
-			<stop offset="50%">
-			  <animate
-				attributeName="stop-color"
-				values="#224488;cyan"
-				dur="20s"
-				repeatCount="indefinite"
-			  >
-			  </animate>
-			</stop>
-			<stop offset="100%">
-			  <animate
-				attributeName="stop-color"
-				values="cyan;#112266"
-				dur="20s"
-				repeatCount="indefinite"
-			  >
-			  </animate>
-			</stop>
-		  </linearGradient>
-		</svg>
-		<main id="main"
-			class="max-w-prose mx-auto py-8 px-6 bg-gradient-to-b from-zinc-900 to-zinc-1000"
-		>
-			<ul
-				x-data="{ pantallas: [] }"
-				x-init={`() => fetch('${backendURL}/pantalla', { headers: { 'ngrok-skip-browser-warning': '69420' }})
+{
+	!id && (
+		<Regular title="Interacción - Una nueva piel">
+			<svg class="h-0 w-0 absolute" aria-hidden="true" focusable="false">
+				<linearGradient id="gradient-2" x2="1" y2="1">
+					<stop offset="0%">
+						<animate
+							attributeName="stop-color"
+							values="blue;#447799"
+							dur="20s"
+							repeatCount="indefinite"
+						></animate>
+					</stop>
+					<stop offset="50%">
+						<animate
+							attributeName="stop-color"
+							values="#224488;cyan"
+							dur="20s"
+							repeatCount="indefinite"
+						></animate>
+					</stop>
+					<stop offset="100%">
+						<animate
+							attributeName="stop-color"
+							values="cyan;#112266"
+							dur="20s"
+							repeatCount="indefinite"
+						></animate>
+					</stop>
+				</linearGradient>
+			</svg>
+			<main
+				id="main"
+				class="max-w-prose mx-auto py-8 px-6 bg-gradient-to-b from-zinc-900 to-zinc-1000"
+			>
+				<ul
+					x-data="{ pantallas: [] }"
+					x-init={`() => fetch('${backendURL}/pantalla', { headers: { 'ngrok-skip-browser-warning': '69420' }})
 								.then(resp => resp.json())
 								.then(data => pantallas = data)
-								.catch(err => document.getElementById("main").innerHTML = '${fuera_de_linea}')`}
-				class="grid grid-cols-1 gap-4"
-			>	
-				<template x-for="p in pantallas">
-					<li class="w-full h-64">
-						<a
-							x-bind:href={`'/interaccion/' + p._id`}
-							x-bind:class="!p.manipulable && 'pointer-events-none'"
-							class="h-full w-full"
-						>
-							<div class="relative h-full w-3/4 mx-auto grid place-items-center">
-								<Screen
-									className="absolute filter invert"
-									fill="url(#gradient-2)"
-								/>
-								<p
-									x-text="p.descripcion"
-									class="text-lg uppercase font-bold text-zinc-50 absolute h-full w-full \
-										grid place-items-center transform -translate-y-6 text-center"
-								>
-								</p>
-								<span x-text="p.id" class="text-zinc-200"></span>
-							</div>
-						</a>
-					</li>
-				</template>
-			</ul>
-		</main>
-	</Regular>
-)}
-{!!id && (
-	<Fullscreen title={`Pantalla ${id} - Una nueva piel`}>
-		<div id="main"
-			x-data="{ pantalla: {}, cargando: true }"
-			x-init={`() => fetch('${backendURL}/pantalla/${id}', { headers: { 'ngrok-skip-browser-warning': '69420' }})
-							.then(resp => resp.json())
-							.then(data => pantalla = data)
-							.then(() => cargando = false)
-							.catch(err => document.getElementById("main").innerHTML = '${fuera_de_linea}')`}
-			class="bg-zinc-900"
-		>
-		<video autoplay muted loop class="fixed object-cover h-full opacity-25">
-			<source src="/fragmento12.webm" type="video/webm">
-		</video>
-		
-			<p x-show="cargando">Cargando...</p>
-			<p
-				x-cloak
-				x-show="!cargando && !pantalla.manipulable"
-			>
-				En este momento esta pantalla no está disponible
-			</p>
-			<div
-				x-cloak
-				x-show="!cargando && pantalla.manipulable"
-				id="pantalla"
-				data-id={id}
-				data-url={backendURL}
-			>
-			</div>
-		</div>
-	</Fullscreen>
-)}
-
-<script>
-import Konva from 'konva';
-import { io } from "socket.io-client";
-
-const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max);
-
-function main() {
-	const id = document.getElementById("pantalla")?.dataset?.id;
-	const data = document.getElementById("pantalla")?.dataset?.data;
-	if (!id) {
-		return;
-	}
-
-	const backendURL = document.getElementById("pantalla")?.dataset?.url!;
-
-	if(data){
-		const ws = io(backendURL, { path: "/ws/", withCredentials: false, extraHeaders: { 'ngrok-skip-browser-warning': '69420' }});
-		ws.on("pantalla patched", ({ x, y }) => circle.x(x).y(y));
-	};
-	function patchCoordinate(x: number, y: number) {
-		var json = {
-			tipo: "float",
-			x,
-			y,
-			nombre: "shift",
-			duracion: -1,
-		};
-
-		fetch(`${backendURL}/pantalla/${id}`,
-		 {
-			  method: "PATCH",
-			  headers: {
-				'Content-Type': 'application/json',
-				'ngrok-skip-browser-warning': '69420',
-			  },
-			  body: JSON.stringify(json)
-		  })
-		.catch(err => console.log('Hubo un error' + err));
-	 }
-
-	const stage = new Konva.Stage({
-		container: "pantalla",
-		width: window.innerWidth,
-		height: window.innerHeight,
-	});
-
-	const layer = new Konva.Layer();
-
-	const circle = new Konva.Circle({
-		x: 100,
-		y: 100,
-		radius: 10,
-		fill: "#89b717",
-		opacity: 1,
-		draggable: true,
-	});
-
-	circle.on("dragmove", _ => {
-		circle
-			.x(clamp(circle.x(), circle.width() / 2, window.innerWidth - circle.width()))
-			.y(clamp(circle.y(), circle.height() / 2, window.innerHeight - circle.height()));
-
-		patchCoordinate(circle.x(), circle.y());
-	});
-
-	layer.add(circle);
-	stage.add(layer);
-
-	layer.draw();
+								.then(_ => document.getElementById("offline-msg").remove())
+								.catch(err => console.log("Error"))`}
+					class="grid grid-cols-1 gap-4"
+				>  
+					<template x-for="p in pantallas">
+						<Monitor id="p._id" title="p.descripcion" />
+					</template>
+				</ul>
+				<div slot="fallback"><Offline/></div>					
+			</main>
+		</Regular>)
 }
-
-main();
-</script>
+{
+	!!id && (
+		<Fullscreen title={`Pantalla ${id} - Una nueva piel`}>
+			<Pantalla id={id} color={color} />
+		</Fullscreen>
+	)
+}

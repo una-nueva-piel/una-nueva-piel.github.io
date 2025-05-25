@@ -1,0 +1,111 @@
+---
+import Offline from "./Offline.astro";
+export interface Props {
+    id: string;
+    color: string;
+}
+const backendURL = Astro.generator;
+const {id, color } = Astro.props;
+---
+<div id="main" 
+x-data="{ pantalla: {}, cargando: true }"
+x-init={`() => fetch('${backendURL}/pantalla/${id}', { headers: { 'ngrok-skip-browser-warning': '69420' }})
+                .then(resp => resp.json())
+                .then(data => pantalla = data)
+                .then(() => cargando = false)
+                .catch((err) => document.getElementById("main").innerHTML = ${Offline};`}
+class="bg-zinc-900"
+>
+<video autoplay muted loop class="fixed object-cover h-full opacity-25">
+<source src="/fragmento12.webm" type="video/webm">
+</video>
+
+<p x-show="cargando">Cargando...</p>
+<p
+    x-cloak
+    x-show="!cargando && !pantalla.manipulable"
+>
+    En este momento esta pantalla no está disponible
+</p>
+<div
+    x-cloak
+    x-show="!cargando && pantalla.manipulable"
+    id="pantalla"
+    data-id={id}
+    data-url={backendURL}
+    data-color={color}
+    onclick="alert(`{color}`)"
+    >
+</div>
+</div>
+<script>
+    import Konva from 'konva';
+    import { io } from "socket.io-client";
+    
+    const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max);
+    
+    function main() {
+        const id = document.getElementById("pantalla")?.dataset?.id;
+        const data = document.getElementById("pantalla")?.dataset?.data;
+        if (!id) {
+            return;
+        }
+        const backendURL = document.getElementById("pantalla")?.dataset?.url!;
+    
+        if(data){
+            const ws = io(backendURL, { path: "/ws/", withCredentials: false, extraHeaders: { 'ngrok-skip-browser-warning': '69420' }});
+            ws.on("pantalla patched", ({ x, y }) => circle.x(x).y(y));
+        };
+        function patchCoordinate(x: number, y: number) {
+            var json = {
+                tipo: "float",
+                x,
+                y,
+                nombre: "shift",
+                duracion: -1,
+            };
+    
+            fetch(`${backendURL}/pantalla/${id}`,
+             {
+                  method: "PATCH",
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': '69420',
+                  },
+                  body: JSON.stringify(json)
+              })
+            .catch(err => console.log('Hubo un error' + err));
+         }
+    
+        const stage = new Konva.Stage({
+            container: "pantalla",
+            width: window.innerWidth,
+            height: window.innerHeight,
+        });
+    
+        const layer = new Konva.Layer();
+    
+        const circle = new Konva.Circle({
+            x: 100,
+            y: 100,
+            radius: 10,
+            fill: '{color}',
+            opacity: 1,
+            draggable: true,
+        });
+    
+        circle.on("dragmove", _ => {
+            circle
+                .x(clamp(circle.x(), circle.width() / 2, window.innerWidth - circle.width()))
+                .y(clamp(circle.y(), circle.height() / 2, window.innerHeight - circle.height()));
+            patchCoordinate(circle.x(), circle.y());
+        });
+    
+        layer.add(circle);
+        stage.add(layer);
+    
+        layer.draw();
+    }
+    
+    main();
+</script>
