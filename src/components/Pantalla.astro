@@ -3,9 +3,10 @@ import Offline from "./Offline.astro";
 export interface Props {
     id: string;
     color: string;
+    video: string;
 }
 const backendURL = Astro.generator;
-const {id, color } = Astro.props;
+const {id, color, video } = Astro.props;
 ---
 <div id="main" 
 x-data="{ pantalla: {}, cargando: true }"
@@ -17,7 +18,7 @@ x-init={`() => fetch('${backendURL}/pantalla/${id}', { headers: { 'ngrok-skip-br
 class="bg-zinc-900"
 >
 <video autoplay muted loop class="fixed object-cover h-full opacity-25">
-<source src="/fragmento12.webm" type="video/webm">
+<source src={video}>
 </video>
 
 <p x-show="cargando">Cargando...</p>

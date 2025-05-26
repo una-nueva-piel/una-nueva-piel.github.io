@@ -4,42 +4,20 @@ import Regular from "../../layouts/Regular.astro";
 import Pantalla from "../../components/Pantalla.astro";
 import Offline from "../../components/Offline.astro";
 import Monitor from "../../components/Monitor.astro";
+import pages from "./pages.js";
 export async function getStaticPaths() {
-	const pages = [
-		{ id: "", title: "", color: "" },
-		{
-			id: "ver_y_ser_visto",
-			title: "Ver y ser visto",
-			color: "green",
-		},
-		{
-			id: "respirar",
-			title: "Respirar",
-			color: "red",
-		},
-		{
-			id: "nuevas_pieles",
-			title: "Nuevas pieles",
-			color: "blue",
-		},
-		{
-			id: "que_hacemos",
-			title: "Qué hacemos",
-			color: "yellow",
-		},
-	];
-
-	return pages.map(({ id, title, color }) => {
+	return pages.map(({ id, title, color, video }) => {
 		return {
 			params: { id },
-			props: { title, color },
+			props: { title, color, video },
 		};
 	});
 }
 const { id } = Astro.params;
-const { title, color } = Astro.props;
+const { title, color, video } = Astro.props;
 const backendURL = "https://localhost:4430/";
 ---
+
 <style>
 	[x-cloak] {
 		display: none !important;
@@ -56,7 +34,7 @@ const backendURL = "https://localhost:4430/";
 							values="blue;#447799"
 							dur="20s"
 							repeatCount="indefinite"
-						></animate>
+						/>
 					</stop>
 					<stop offset="50%">
 						<animate
@@ -64,7 +42,7 @@ const backendURL = "https://localhost:4430/";
 							values="#224488;cyan"
 							dur="20s"
 							repeatCount="indefinite"
-						></animate>
+						/>
 					</stop>
 					<stop offset="100%">
 						<animate
@@ -72,35 +50,44 @@ const backendURL = "https://localhost:4430/";
 							values="cyan;#112266"
 							dur="20s"
 							repeatCount="indefinite"
-						></animate>
+						/>
 					</stop>
 				</linearGradient>
 			</svg>
 			<main
 				id="main"
 				class="max-w-prose mx-auto py-8 px-6 bg-gradient-to-b from-zinc-900 to-zinc-1000"
-			>
-				<ul
-					x-data="{ pantallas: [] }"
+				x-data="{ pantallas: [], cargando: true }"
+					x-modelable="pantallas"
 					x-init={`() => fetch('${backendURL}/pantalla', { headers: { 'ngrok-skip-browser-warning': '69420' }})
 								.then(resp => resp.json())
 								.then(data => pantallas = data)
-								.then(_ => document.getElementById("offline-msg").remove())
-								.catch(err => console.log("Error"))`}
+								.then(_ => cargando = false)
+								.catch(err => cargando = true)`}
+				
+			>
+				<ul
 					class="grid grid-cols-1 gap-4"
-				>  
+				>
 					<template x-for="p in pantallas">
-						<Monitor id="p._id" title="p.descripcion" />
+						<Monitor
+							id="p._id"
+							title="p.descripcion"
+							video="p.video}"
+						/>
 					</template>
 				</ul>
-				<div slot="fallback"><Offline/></div>					
+				<div x-show.important="cargando">
+					<Offline x-show="pantallas === []"/>
+				</div>
 			</main>
-		</Regular>)
+		</Regular>
+	)
 }
 {
 	!!id && (
 		<Fullscreen title={`Pantalla ${id} - Una nueva piel`}>
-			<Pantalla id={id} color={color} />
+			<Pantalla id={id} color={color} video={video} />
 		</Fullscreen>
 	)
 }
