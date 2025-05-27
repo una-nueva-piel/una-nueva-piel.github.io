@@ -25,7 +25,7 @@ const backendURL = "https://localhost:4430/";
 </style>
 {
 	!id && (
-		<Regular title="Interacción - Una nueva piel">
+		<Regular title="Interacción - Una nueva piel" description="Página para elegir pantallas para alterar.">
 			<svg class="h-0 w-0 absolute" aria-hidden="true" focusable="false">
 				<linearGradient id="gradient-2" x2="1" y2="1">
 					<stop offset="0%">
@@ -73,12 +73,12 @@ const backendURL = "https://localhost:4430/";
 						<Monitor
 							id="p._id"
 							title="p.descripcion"
-							video="p.video}"
+							video="p.video"
 						/>
 					</template>
 				</ul>
-				<div x-show.important="cargando">
-					<Offline x-show="pantallas === []"/>
+				<div  x-show.important="cargando">
+					<Offline/>
 				</div>
 			</main>
 		</Regular>
@@ -86,7 +86,7 @@ const backendURL = "https://localhost:4430/";
 }
 {
 	!!id && (
-		<Fullscreen title={`Pantalla ${id} - Una nueva piel`}>
+		<Fullscreen title={`Pantalla ${id} - Una nueva piel`} description="">
 			<Pantalla id={id} color={color} video={video} />
 		</Fullscreen>
 	)
