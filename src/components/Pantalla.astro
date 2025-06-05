@@ -5,10 +5,39 @@ export interface Props {
     color: string;
     video: string;
 }
-const backendURL = "https://localhost:4430";
+const backendURL = "https://192.168.0.140:4430";
 const { id, color, video } = Astro.props;
 ---
 
+<script is:inline>
+    function offline() {
+        document.getElementById("main").innerHTML = `<div
+    class="isolate max-w-prose h-full grid grid-cols-1 grid-rows-[auto_auto_1fr_auto]
+			py-8 gap-4 px-6 bg-gradient-to-b from-zinc-900"
+            id="offline-msg"
+>
+    <span class="font-bold text-5xl text-center text-slate-50">
+        Una nueva piel
+    </span>
+    <span class="text-xl text-center italic text-slate-100">
+        Desde el jueves 12 de junio en el Museo Evita - Palacio Ferreyra.
+    </span>
+    <div  class="text-xl text-center text-slate-100">
+        (Si ves este mensaje frente a los televisores de la muestra, podés enviar un mail a miguel.pagano en el dominio @unc.edu.ar)
+    </div>
+    <a class="w-full" href="/interaccion">
+        <div class="relative h-full w-3/4 mx-auto grid place-items-center">
+        </div>
+    </a>
+    <a
+        class="text-xl font-bold self-center justify-self-center text-slate-200"
+        href="/"
+    >
+        Volver al inicio
+    </a>
+</div>`;
+    }
+</script>
 <div
     id="main"
     x-data="{ pantalla: {}, cargando: true }"
@@ -16,10 +45,16 @@ const { id, color, video } = Astro.props;
                 .then(resp => resp.json())
                 .then(data => pantalla = data)
                 .then(() => cargando = false)
-                .catch((err) => document.getElementById('main').innerHTML = 'ble')`}
+                .catch((err) => offline())`}
     class="bg-zinc-900"
 >
-    <video autoplay muted loop class="fixed object-cover h-full opacity-25">
+    <video
+        autoplay
+        muted
+        loop
+        class="fixed object-cover h-full opacity-25"
+        id="video-pantalla"
+    >
         <source src={video} />
     </video>
 
@@ -48,7 +83,8 @@ const { id, color, video } = Astro.props;
     function main() {
         const id = document.getElementById("pantalla")?.dataset?.id;
         const data = document.getElementById("pantalla")?.dataset?.pantalla;
-        console.log("id: " + id +". data: " + data);
+        const color = document.getElementById("pantalla")?.dataset?.color;
+        console.log("id: " + id + ". data: " + data);
         if (!id) {
             return;
         }
@@ -86,19 +122,34 @@ const { id, color, video } = Astro.props;
             width: window.innerWidth,
             height: window.innerHeight,
         });
-
-        const layer = new Konva.Layer();
-
         const circle = new Konva.Circle({
-            x: 100,
-            y: 100,
-            radius: 10,
-            fill: "{color}",
-            opacity: 1,
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2,
+            radius: 8,
+            fill: color,
+            strokeWidth: 0,
             draggable: true,
         });
 
+        const layer = new Konva.Layer();
+
+        layer.add(circle);
+        stage.add(layer);
+        var animar = true;
+        const period = 6000;
+
+        const anim = new Konva.Animation(function (frame) {
+            const scale =
+                Math.abs(Math.sin((frame.time * 2 * Math.PI) / period)) + 1;
+            if (animar) {
+                circle.scale({ x: scale, y: scale });
+            }
+        }, layer);
+
+        anim.start();
+
         circle.on("dragmove", (_) => {
+            animar = false;
             circle
                 .x(
                     clamp(
@@ -116,11 +167,10 @@ const { id, color, video } = Astro.props;
                 );
             patchCoordinate(circle.x(), circle.y());
         });
-
-        layer.add(circle);
-        stage.add(layer);
-
-        layer.draw();
+        circle.on("dragend", (_) => {
+            animar = true;
+        });
+        circle.draw();
     }
 
     main();
