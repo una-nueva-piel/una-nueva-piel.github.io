@@ -48,15 +48,10 @@ const { id, color, video } = Astro.props;
                 .catch((err) => offline())`}
     class="bg-zinc-900"
 >
-    <video
-        autoplay
-        muted
-        loop
+    <img
         class="fixed object-cover h-full opacity-25"
         id="video-pantalla"
-    >
-        <source src={video} />
-    </video>
+       src={video} />
 
     <p x-show="cargando">Cargando...</p>
     <p x-cloak x-show="!cargando && !pantalla.manipulable">
